@@ -1,0 +1,76 @@
+<% if logged_in? %><%#title "Welcome " + current_user.username.capitalize.to_s + ", " %><%end%>
+<div id='home_main'>
+	
+	<div id='update'></div>
+	
+<div id="list_home">
+<%if @users and @users.length > 0%>
+<form id="search_form"> 
+<p><strong>Search</strong><%= text_field 'user', 'name', :autocomplete => 'off', :value=>'' ,:size=>20%></p>
+<div class="auto_complete" id="user_name_auto_complete"></div> 
+<%= auto_complete_field :user_name,
+     :url => { :action=>'autocomplete_user_name' },
+     :tokens => ',' %>
+</form>
+
+	<table width="100%" border=0>
+		<tr><th colspan="8" align="left" ><h3><font color="#2E2EFE">Friend List</font>
+			<i id="spinner_id" style="display: none;"><font color="blue" size=2><%= image_tag("loader.gif",
+				              :align => "absmiddle",
+				              :border => 0,
+				              :id => "spinner"
+	              		 )%>loading...</font></i></h3></th>
+			<th colspan="4" align="right"><%=link_to image_tag('/images/logout.png',:title=>"Logout",:size=>'50x50',:border=>0) , logout_path%></th>
+		</tr>
+	</table>
+
+<%= will_paginate @users %>
+
+<div style='width:990px;overflow:auto'> 
+<table width="100%" border=0>
+	<tr style="background-color:#F7BE81;">
+	<th width="2%">S.no</th><th width="10%">Name</th><th width="10%">Email</th><th>DOB</th><th>Qualification</th><th>Occupation</th><th width="8%">Mobile</th>
+	<th width="20%">Address</th><th>Relationship</th><th>Comment</th><th width="5%" colspan="2">Missing</th>
+	</tr>
+	<%even_odd = 0
+	@users.each do |user| 
+	even_odd = 1 - even_odd%>
+	<tr class="background<%= even_odd %>" id='f_<%=user.id%>'>
+		<td align="right" width="2%" ><%=@sno%>.</td>
+		<td width="10%"><%=user.name.capitalize if user.name!=nil%></td>
+		<td width="10%"><%=user.email.capitalize if user.email!=nil%></td>
+		<td align="center" width="10%"><%=user.dob.strftime('%d-%m-%Y') if user.dob!=nil%></td>
+		<td><%=user.qualification.capitalize if user.qualification!=nil%></td>
+		<td><%=user.occupation.capitalize if user.occupation!=nil%></td>
+		
+		<td align="right" width="8%"><%=user.mobile%></td>
+		<td width="20%"><%=user.address%></td><td><%=user.relationship.capitalize%></td><td><%=user.comment%></td>
+	<%if session[:user_id]==user.id or @admin%>
+		<td width="5%" align="center">
+			<%#=link_to "Edit",:controller=>"home" ,:action=>"edit" ,:user_id=>user.id %>
+			<%=link_to_remote( "Edit", :update=>'update' , :url=>{ :controller=>"home" ,:action=>"edit" ,:user_id=>user.id },
+ 				:loading=>"$('#spinner_id').show();" ,
+                :loaded=>"$('#spinner_id').hide();")%>
+		</td>
+		<td width="5%" align="center" id="user_<%=user.id%>">
+			<%#=link_to_remote( "Delete", :update=>'f_#{user.id}',:url=>{:controller=>"home" ,:action=>"delete" ,:user_id=>user.id},:success => "$(this).effect('highlight', {color: '#88ff88'}, 2000);")%>
+			
+				<%= check_box_tag("chk_status","status", user.status, 
+          			:onclick => remote_function(
+          			:url => {:action => :delete,:user_id=>user.id,:flag=>!user.status}))%>
+
+				<%#=link_to "Delete", :controller=>"home" ,:action=>"delete" ,:user_id=>user.id %>	
+		</td>
+    <%else%>
+	 <td>&nbsp;</td><td>&nbsp;</td>
+	<%end%>
+	</tr>
+	<%@sno+=1%>
+	<%end%>
+<%end%>
+</table>
+</div>
+</div>
+<div id="footer">sssdfsdf</div>
+</div>
+

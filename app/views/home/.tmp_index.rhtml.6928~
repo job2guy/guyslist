@@ -1,0 +1,45 @@
+<%#title "Welcome" + " " + @user.username.capitalize + ","%>
+<%title "Welcome"%>
+<br/><br/>
+<div id='update'></div>
+<%if @users and @users.length > 0%>
+<table width="100%">
+	<tr><th colspan="6" align="left"><h3><font color="#2E2EFE">Friend List</font><i id="spinner_id" style="display: none;"><font color="blue" size=2><%= image_tag("loader.gif",
+			              :align => "absmiddle",
+			              :border => 0,
+			              :id => "spinner"
+              		 )%>loading...</font></i></h3></th><th colspan="5" align="right"><%=link_to "Signout" , logout_path%></th></tr>
+	</table>
+<div style='width:950px;overflow:auto'> 
+<table width="70%">
+	<tr style="background-color:#F7BE81;">
+	<th width="2%">S.no</th><th width="10%">Name</th><th width="10%">Email</th><th>DOB</th><th>Qualification</th><th>Occupation</th><th width="8%">Mobile</th>
+	<th width="20%">Address</th><th>Relationship</th><th>Comment</th><th width="5%">Missing</th>
+	</tr>
+	<%even_odd = 0
+  	i=1
+	@users.each do |user| 
+	even_odd = 1 - even_odd%>
+	<tr class="background<%= even_odd %>">
+		<td align="right" width="2%" ><%=i%>.</td>
+		<td width="10%"><%=user.name.capitalize if user.name!=nil%></td>
+		<td width="10%"><%=user.email.capitalize if user.email!=nil%></td>
+		<td align="center" width="10%"><%=user.dob.strftime('%d-%m-%Y') if user.dob!=nil%></td>
+		<td><%=user.qualification.capitalize if user.qualification!=nil%></td>
+		<td><%=user.occupation.capitalize if user.occupation!=nil%></td>
+		
+		<td align="right" width="8%"><%=user.mobile%></td>
+		<td width="20%"><%=user.address%></td><td><%=user.relationship%></td><td><%=user.comment%></td>
+		<%if user.name==nil or user.qualification==nil or user.occupation==nil or user.comment==nil or user.comment=='No feedback' or user.dob==nil and session[:user_id]==user.id %>
+		<td width="5%" align="center"><%#=link_to "Edit",:controller=>"home" ,:action=>"edit" ,:user_id=>user.id %>
+			<%=link_to_remote( "Edit", :update=>'update' , :url=>{ :controller=>"home" ,:action=>"edit" ,:user_id=>user.id },
+ 				:loading=>"$('#spinner_id').show();" ,
+                :loaded=>"$('#spinner_id').hide();")%>
+				</td>
+	     <%end%>
+	</tr>
+	<%i+=1%>
+	<%end%>
+<%end%>
+</table>
+</div>

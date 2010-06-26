@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title><%= h(yield(:title) || "Untitled") %></title>
+	<%= stylesheet_link_tag '/jquery-ui/css/custom-theme/jquery-ui-1.8.1.custom.css' %>
+    <%= stylesheet_link_tag 'application' ,'livevalidation','menu','paginate'%>
+	<%= javascript_include_tag 'jquery', 'jquery-ui', 'jrails' ,'jquery.suggest', 'jrails.autocomplete' ,'application' ,'livevalidation','menu'%>
+	<!--[if lte IE 6]>
+	 <%= stylesheet_link_tag 'applicationie' ,'livevalidation'%>
+	<![endif]-->
+	<link rel="Shortcut Icon" href="/images/favicon.ico">
+    <%= yield(:head) %>
+	<style>
+div.auto_complete {
+  width: 300px; 
+  background: #fff; 
+} 
+div.auto_complete ul { 
+  border: 1px solid #888; 
+  margin: 0px; 
+  padding: 0px; 
+  width: 100%; 
+  list-style-type: none; 
+} 
+div.auto_complete ul li { 
+  margin: 0px; 
+  padding: 3px; 
+} 
+div.auto_complete ul li.selected { 
+  background-color: #ffb; 
+} 
+div.auto_complete ul strong.highlight { 
+  color: #800; 
+  margin: 0px; 
+  padding: 0px; 
+} 
+</style>
+
+	<script>
+  	   $(document).ready( function() { 
+				$( '#dateid').datepicker({ buttonImage: '/images/cal.gif' , buttonImageOnly: true , showOn: 'both' , dateFormat: 'dd-mm-yy'  , appendText: '(dd-mm-yyyy)', changeMonth: true ,changeYear: true ,yearRange: '1980:2000'});
+						 } )
+	</script>
+  </head>
+  <body>
+    	<div id="container">
+    	 <%- if show_title? -%>
+        	<h1><%=h yield(:title) %></h1>
+      	<%- end -%>
+	  <%- flash.each do |name, msg| -%>
+        <%= content_tag :div, msg, :id => "flash_#{name}" %>
+      <%- end -%>
+	  <%if session[:user_id]==1%>
+    	<ul id="nav">
+		    <li><a href="/home/">Home</a></li>
+		    <li><a href="#">View</a>
+        		<ul>
+            		<li><a href="#">User</a>
+               			 <ul>
+                    		<li><a href="/home/index?flag=true">Active</a></li>
+                    		<li><a href="/home/index?flag=false">Unactive</a></li>
+                		 </ul>
+            		</li>
+					<li><a href="#">DOB</a></li>
+        		</ul>
+	    	</li>
+			
+		</ul>
+		<%end%>
+      <%= yield %>
+    </div>
+  </body>
+</html>

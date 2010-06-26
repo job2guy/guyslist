@@ -1,0 +1,125 @@
+<% title "Sign up" %>
+
+<p style="padding-up:10px;">
+<table style="background:#736F6E;"><tr><td><font size=4 color="#6D6968">Already have an account?</font></td><td><%= link_to image_tag ('/images/login.jpg', :size=>'70x70'), login_path %></td></tr></table>
+ </p>
+
+<% form_for @user do |f| %>
+  <%= f.error_messages %>
+  <fieldset>
+  		<legend>Login detail</legend>
+  <p>
+    <%= f.label :username %><br />
+    <%= f.text_field :username ,:size=>20 ,:id=>"loginname_id"%><span id="loginnameerror"></span>
+  </p>
+  
+  <p>
+    <%= f.label :email, "Email Address" %><br />
+    <%= f.text_field :email ,:size=>20 ,:id=>"email_id"%><span id="emailerror"></span>
+  </p>
+  
+  <p>
+    <%= f.label :password %><br />
+    <%= f.password_field :password ,:size=>20 ,:id=>"password_id"%>
+  </p>
+  <p>
+    <%= f.label :password_confirmation, "Confirm Password"%><br />
+    <%= f.password_field :password_confirmation ,:size=>20 ,:id=>"confirmpassword_id"%><span id="confirmerror"></span>
+  </p>
+  	</fieldset>
+	
+	
+	<fieldset>
+  		<legend>Personel detail</legend>
+  <p>
+  	<%= f.label :name, "Name" %><br />
+    <%= f.text_field :name ,:size=>20 , :id=>'name_id'%><span id="nameerror"></span>
+  </p>
+  
+  <p>
+  	<%= f.label :dob, "Date Of Birth" %><br />
+    <%=f.text_field :dob , :size=>20 , :id=>"dateid" %><span id="dateerror"></span>
+  </p>
+  
+  <p>
+  	<%= f.label :age, "Age" %><br />
+	<%=f.text_field :age ,:size=>2 , :id=>'age_id' , :maxlength=>2, :disabled=>true%>
+  </p>
+  
+  <p>
+  	<%= f.label :gender, "Gender" %><br />
+	<% ['male', 'female'].each do |gender| %>
+      <%= f.radio_button :gender , gender %><%= gender.humanize %>
+    <% end %>
+  </p>
+  
+  <p>
+  	<%= f.label :mobile, "Mobile" %><br />
+    <%= f.text_field :mobile ,:size=>20 , :id=>'mobile_id',:maxlength=>11 %><span id="mobileerror"></span>
+  </p>
+  
+  <p>
+  	<%= f.label :address, "Address" %><br />
+    <%= f.text_area :address ,:rows=>4,:cols=>20 , :id=>'address_id'%><span id="addresserror"></span>
+  </p>
+  
+  <p>
+  	<%= f.label :relationship, "Relationship" %><br />
+    <%=f.text_field :relationship ,:size=>20 , :id=>'relationship_id'%><span id="relationshiperror"></span>
+  </p>
+  
+  <p>
+  	<%= f.label :comment, "Comments" %><br />
+    <%=f.text_field :comment ,:size=>20 , :id=>'comment_id'%>
+  </p>
+  
+  
+  </field>
+  <p><%= f.submit "Sign up" %></p>
+<% end %>
+
+<script>
+	var name = new LiveValidation( "name_id",{ validMessage: "",insertAfterWhatNode: "nameerror"});
+	name.add( Validate.Presence,{failureMessage: "Name can't be blank"}  ); 
+	name.add( Validate.Exclusion, { within: [ '1' , '2', '3','4','5','6','7','8','9','0'],partialMatch: true,failureMessage: "Numbers not allowed"});
+	
+	var username = new LiveValidation( "loginname_id",{ validMessage: "",insertAfterWhatNode: "loginnameerror"});
+	username.add( Validate.Presence,{failureMessage: "Loginname can't be blank"}  ); 
+
+	var date = new LiveValidation( "dateid",{ validMessage: "",insertAfterWhatNode: "dateerror"});
+	date.add( Validate.Presence,{failureMessage: "Date can't be blank"}  ); 
+
+	var mobile = new LiveValidation( "mobile_id",{ validMessage: "",insertAfterWhatNode: "mobileerror"});
+	mobile.add( Validate.Presence,{failureMessage: "Mobile can't be blank"}  );
+	mobile.add( Validate.Numericality,{failureMessage: "Must be number"}  );
+	mobile.add(Validate.Length, { minimum: 10, maximum: 11 },{failureMessage: "Enter valid mobile number"}  );
+	
+	var email = new LiveValidation('email_id',{ validMessage: "",insertAfterWhatNode: "emailerror"});
+	email.add( Validate.Presence,{failureMessage: "Email can't be blank"}  );
+	email.add( Validate.Email,{failureMessage: "Enter valid email"}  );
+	email.add(Validate.Length, { minimum: 10, maximum: 30 },{failureMessage: "Enter valid email"}  );
+	
+	var address = new LiveValidation('address_id',{ validMessage: "",insertAfterWhatNode: "addresserror"});
+	address.add( Validate.Presence,{failureMessage: "Address can't be blank"}  );
+	
+	var relation = new LiveValidation('relationship_id',{ validMessage: "",insertAfterWhatNode: "relationshiperror"});
+	relation.add( Validate.Presence,{failureMessage: "Hey! , Relationship can't be blank"}  );
+
+	var password = new LiveValidation('confirmpassword_id',{ validMessage: "",insertAfterWhatNode: "confirmerror"});
+	password.add( Validate.Confirmation, { match: 'password_id' } );
+	
+	$('#dateid').change( function() {
+		var curr = new Date();
+		var cyear=curr.getFullYear();
+		if ($('#dateid').datepicker('getDate') != null) {  
+           var dob = $('#dateid').datepicker('getDate');
+		   var byear=dob.getFullYear();  
+         }
+		 $('#age_id').val(cyear-byear);
+	});
+	
+	/*$(document).ready(function(){
+		$( '#dateid').datepicker({ buttonImage: '/images/cal.gif' , buttonImageOnly: true , showOn: 'both' , dateFormat: 'dd-mm-yy'  , appendText: '(dd-mm-yyyy)', changeMonth: true ,changeYear: true ,yearRange: '1980:2000'});
+	});*/
+	
+</script>

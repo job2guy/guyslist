@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title><%= h(yield(:title) || "Untitled") %></title>
+        <%= stylesheet_link_tag '/jquery-ui/css/custom-theme/jquery-ui-1.8.1.custom.css' %>
+        <%= stylesheet_link_tag 'home' ,'livevalidation','menu','paginate','jquery.message'%>
+        <%= javascript_include_tag 'jquery', 'jquery-ui', 'jrails' ,'jquery.suggest', 'jrails.autocomplete' ,'application' ,'livevalidation','menu','jquery.message' %>
+        <!--[if lte IE 6]>
+            <%= stylesheet_link_tag 'homeie'%>
+        <![endif]-->
+        <link rel="Shortcut Icon" href="/images/favicon.ico">
+        <%= yield(:head) %>
+        <style>
+            div.auto_complete {
+                width: 300px;
+                background: #fff;
+            }
+            
+            div.auto_complete ul {
+                border: 1px solid #888;
+                margin: 0px;
+                padding: 0px;
+                width: 100%;
+                list-style-type: none;
+            }
+            
+            div.auto_complete ul li {
+                margin: 0px;
+                padding: 3px;
+            }
+            
+            div.auto_complete ul li.selected {
+                background-color: #ffb;
+            }
+            
+            div.auto_complete ul strong.highlight {
+                color: #800;
+                margin: 0px;
+                padding: 0px;
+            }
+        </style>
+        <script>
+  	   $(document).ready( function() { 
+				$( '#dateid').datepicker({ buttonImage: '/images/cal.gif' , buttonImageOnly: true , showOn: 'both' , dateFormat: 'dd-mm-yy'  , appendText: '(dd-mm-yyyy)', changeMonth: true ,changeYear: true ,yearRange: '1979:2000'});
+						 } )
+	</script>
+    </head>
+    <body topmargin="0" leftmargin="0">
+        <div id="leftnav">
+            <h1>Menu</h1>
+            <ul>
+                <li>
+                    <a href="/hrs/index?flag=home">Home</a>
+                </li>
+				
+                <li>
+                    <a href="/password_resets/<%=session[:user_id]%>/edit">Change Password</a>
+                </li>
+				<li>
+                    <a href="<%=logout_path%>">Logout</a>
+                </li>
+            </ul>
+			
+			<iframe width="200" height="200" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.co.in/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Erode,+Tamil+Nadu&amp;sll=9.915997,78.121847&amp;sspn=0.088607,0.154324&amp;ie=UTF8&amp;hq=&amp;hnear=Erode,+Tamil+Nadu&amp;ll=11.342213,77.727413&amp;spn=0.033662,0.034161&amp;z=13&amp;iwloc=A&amp;output=embed"></iframe><br /><small><a href="http://maps.google.co.in/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Erode,+Tamil+Nadu&amp;sll=9.915997,78.121847&amp;sspn=0.088607,0.154324&amp;ie=UTF8&amp;hq=&amp;hnear=Erode,+Tamil+Nadu&amp;ll=11.342213,77.727413&amp;spn=0.033662,0.034161&amp;z=13&amp;iwloc=A" style="color:#0000FF;text-align:left">View Larger Map</a></small>
+        </div>
+        <div id="content">
+            <p>
+                <%- if show_title? -%>
+                <h1><%=h yield(:title) %></h1>
+                <%- end -%>
+            </p>
+            <p>
+                <%- flash.each do |name, msg| -%>
+                <%= content_tag :div, msg, :id => "flash_#{name}" %>
+                <%- end -%>
+          	</p>
+            <p>
+                <%= yield %>
+            </p>
+        </div>
+    </body>
+</html>
+<script>
+$(function() {
+	$().message("<b>Developed by Prabu in Ruby on Rails</b>");
+});
+</script>

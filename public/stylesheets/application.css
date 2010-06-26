@@ -1,0 +1,150 @@
+body {
+  background:  #040000 url('/images/fantasy.jpg') no-repeat;
+  font-family: Verdana, Helvetica, Arial;
+  font-size: 14px;
+  margin: 0px;
+}
+
+a img {
+  border: none;
+}
+
+a {
+  color: #0000FF;
+}
+
+.clear {
+  clear: both;
+  height: 0;
+  overflow: hidden;
+}
+
+#container {
+  width: 75%;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  padding: 20px 40px;
+  border: solid 1px black;
+}
+
+#flash_notice, #flash_error {
+  padding: 5px 8px;
+  margin: 10px 0;
+}
+
+#flash_notice {
+  background-color: #CFC;
+  border: solid 1px #6C6;
+}
+
+#flash_error {
+  background-color: #FCC;
+  border: solid 1px #C66;
+}
+
+.fieldWithErrors {
+  display: inline;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid #CF0000;
+  padding: 0px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: 0;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 8px;
+}
+
+#errorExplanation ul {
+  margin: 2px 24px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: disc;
+}
+
+.background0 {
+	background-color: #81F781;
+}
+.background1 {
+	background-color: #A9F5F2;
+}
+
+.divMain{
+	width:360px;
+	border: 1px solid #A4A4A4;
+	padding-bottom:10px;
+	padding-left:5px;
+	padding-right:5px;
+	padding-top:10px;
+}
+
+.divUser{
+	width:390px;
+	height:30px;
+	padding-bottom:10px;
+} 
+
+.lblUser{
+	width:200px;
+	float:left;
+	color:#6D6968;
+	text-align:left;
+}
+
+.divPass{
+  	width:390px;
+	height:30px;
+	padding-top:10px;
+}
+.lblPass{
+	width:200px;
+	float:left;
+	color:#6D6968;
+	text-align:left;
+}
+
+.txtInput{
+	width:132px;
+	height:18px;
+	float:left;
+	
+}
+
+.txtInput input{
+	width:132px;
+	height:18px;
+	background: url('/images/login1.png') no-repeat;
+	padding-left:10px;
+	padding-right:10px;
+	border: none;
+	
+}
+
+.divSubmit{
+	text-align:center;
+	padding-left:85px;
+}
+
+.buttonSubmit
+{
+	background: url('/images/login_02.png') no-repeat;
+}
+

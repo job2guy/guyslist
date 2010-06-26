@@ -1,0 +1,20 @@
+<%title "Log in"%>
+<% form_tag sessions_path do %>
+<center>
+	<table border=0 cellpadding=0 cellspacing=0><tr><td>
+	<font size=3 color="#6D6968">Don't have an account? </font></td><td><%=link_to image_tag('/images/signup.jpg', :size=>'90x90'), signup_path %></td></tr></table>
+
+	<div class="divMain">
+		  <div class="divUser">
+		   			<div class="lblUser"><%= label_tag :login, "Username or Email Address" %></div>
+		   			<div class="txtInput"> <%= text_field_tag :login, params[:login]%></div>
+		  </div>
+ 
+   		  <div class="divPass">
+		    	<div class="lblPass"><%= label_tag :password %></div>
+		    	<div class="txtInput"><%= password_field_tag :password %></div>
+  		  </div>
+		  <div class="divSubmit"><%= submit_tag "Log in" %></div>
+	</div>
+ </center>
+<% end %>

@@ -1,0 +1,94 @@
+<% if logged_in? %><%title "Welcome " + current_user.name.capitalize.to_s + ", " %><%end%>
+<div id='home_main'>
+	
+	<div id='update'></div>
+	
+<div id="list_home">
+<%if @users and @users.length > 0%>
+	<%form_tag :controller=>"home",:action=>"index",:flag=>params[:flag] do%>
+	<p><strong>Search</strong><%= text_field 'user', 'name', :autocomplete => 'off', :value=>'' ,:size=>20%><%=submit_tag "Search"%></p>
+	<div class="auto_complete" id="user_name_auto_complete"></div> 
+	<%= auto_complete_field :user_name,
+	     :url => { :action=>'autocomplete_user_name',:flag=>params[:flag] },
+	     :tokens => ',' %>
+	<%end%>
+
+	
+	<%if params[:flag] and !params[:flag].empty? and params[:flag]=="hr"%>
+	<table width="60%" border=0>
+		<tr><th colspan="4" align="left" ><h3><font color="#2E2EFE">HR List</font></h3></th>
+			<th colspan="2" align="right"><%=link_to image_tag('/images/logout.png',:title=>"Logout",:size=>'50x50',:border=>0) , logout_path%></th>
+		</tr>
+	<%else%>
+	<table width="100%" border=0>
+		<tr><th colspan="8" align="left" ><h3><font color="#2E2EFE">Friend List</font>
+			<i id="spinner_id" style="display: none;"><font color="blue" size=2><%= image_tag("loader.gif",
+				              :align => "absmiddle",
+				              :border => 0,
+				              :id => "spinner"
+	              		 )%>loading...</font></i></h3></th>
+			<th colspan="4" align="right"><%=link_to image_tag('/images/logout.png',:title=>"Logout",:size=>'50x50',:border=>0) , logout_path%></th>
+		</tr>
+		<%end%>
+	</table>
+
+<%= will_paginate @users %>
+
+<div style='width:990px;overflow:auto'> 
+	<%if params[:flag] and !params[:flag].empty? and params[:flag]=="hr"%>
+	<table width="60%" border=0>
+		<tr style="background-color:#F7BE81;">
+		<th width="1%">#</th><th width="10%">Name</th><th width="10%">Email</th><th width="8%">Mobile</th><th width="20%">Address</th><th width="10%">Company</th>
+		</tr>
+	<%else%>
+	<table width="100%" border=0>
+		<tr style="background-color:#F7BE81;">
+		<th width="1%">#</th><th width="10%">Name</th><th width="10%">Email</th><th width="8%">Mobile</th><th width="20%">Address</th><th>Qualification</th><th>Occupation</th>
+		<th>Relationship</th><th>Comment</th><%if @admin%><th>DOB</th><%end%><th width="5%" colspan="2">Missing</th>
+		</tr>
+	<%end%>
+	
+	<%even_odd = 0
+	@users.each do |user| 
+	even_odd = 1 - even_odd%>
+	<tr class="background<%= even_odd %>" id='f_<%=user.id%>'>
+		<td align="right" width="1%" ><%=@sno%>.</td>
+		<td width="10%"><%=user.name.capitalize if user.name!=nil%></td>
+		<td width="10%"><%=user.email.capitalize if user.email!=nil%></td>
+		<td align="right" width="10%"><%=user.mobile%></td>
+		<td width="10%"><%=user.address%></td>
+		<%if params[:flag] and !params[:flag].empty? and params[:flag]=="hr"%>
+			<td><%=user.company.capitalize if user.company!=nil%></td>
+		<%else%>
+			<td><%=user.qualification.capitalize if user.qualification!=nil%></td>
+			<td><%=user.occupation.capitalize if user.occupation!=nil%></td>
+			<td><%=user.relationship.capitalize%></td><td><%=user.comment%></td>
+			<%if @admin%>
+			<td align="center" width="18%"><%=user.dob.strftime('%d-%m-%Y') if user.dob!=nil%></td>
+			<%end%>
+		
+			<%if session[:user_id]==user.id or @admin%>
+				<td width="5%" align="center">
+					<%=link_to_remote( "Edit", :update=>'update' , :url=>{ :controller=>"home" ,:action=>"edit" ,:user_id=>user.id },
+ 							:loading=>"$('#spinner_id').show();" ,
+                			:loaded=>"$('#spinner_id').hide();")%>
+				</td>
+				<td width="5%" align="center" id="user_<%=user.id%>">
+				<%if params[:flag] and !params[:flag].empty? and params[:flag]=='false'%>
+				<%=link_to "Activate", {:controller=>"home" ,:action=>"delete" ,:flag=>params[:flag],:user_id=>user.id }%>
+				<%else%>
+				<%=link_to "Delete", {:controller=>"home" ,:action=>"delete" , :user_id=>user.id ,:flag=>user.status }%>
+				<%end%>
+				</td>
+			<%else%>
+	 			<td>&nbsp;</td><td>&nbsp;</td>
+			<%end%>
+		<%end%>
+	</tr>
+	<%@sno+=1%>
+	<%end%>
+</table>
+</div>
+</div>
+<%end%>
+</div>

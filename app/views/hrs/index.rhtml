@@ -1,0 +1,37 @@
+<% if logged_in? %><%title "Welcome " + current_user.name.capitalize.to_s + ", " %><%end%>
+<div id='home_main'>
+
+<%form_tag :controller=>"hrs",:action=>"index",:id=>"search_form" do%>
+<p><strong>search</strong>
+<%= collection_select(:language, :id, @languages, :id, :name, options ={:prompt => "-Select a Language-"}) %><%=submit_tag "Search"%></p>
+<%end%>
+<%if @users and @users.length > 0%>
+
+<table width="100%" border=0>
+	<tr><th colspan="5" align="left" ><h3><font color="#2E2EFE">Job Seeker List</font>
+			</h3></th>
+			<th colspan="3" align="right"><%=link_to image_tag('/images/logout.png',:title=>"Logout",:size=>'50x50',:border=>0) , logout_path%></th>
+		</tr>
+	<tr style="background-color:#F7BE81;">
+	<th width="1%">#</th><th width="10%">Name</th><th width="8%">Mobile</th><th width="10%">Email</th><th>Qualification</th><th>Occupation</th>
+	<th>DOB</th><th width="20%">Address</th>
+	</tr>
+	<%even_odd = 0
+      i=1
+	@users.each do |user| 
+	even_odd = 1 - even_odd%>
+	<tr class="background<%= even_odd %>" id='f_<%=user.id%>'>
+		<td align="right" width="1%" ><%=i%>.</td>
+		<td width="10%"><%=user.name.capitalize if user.name!=nil%></td>
+		<td align="right" width="10%"><%=user.mobile%></td>
+		<td width="10%"><%=user.email.capitalize if user.email!=nil%></td>
+		<td><%=user.qualification.capitalize if user.qualification!=nil%></td>
+		<td><%=user.occupation.capitalize if user.occupation!=nil%></td>
+		<td align="center" width="18%"><%=user.dob.strftime('%d-%m-%Y') if user.dob!=nil%></td>
+		<td width="10%"><%=user.address%></td>
+	</tr>
+	<%i+=1%>
+<%end%>
+<%end%>
+</table>
+</div>
